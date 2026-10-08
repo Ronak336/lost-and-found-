@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse Items — Campus Lost & Found</title>
+  <meta name="description" content="Browse all lost and found items posted by students on the campus portal.">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>">
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <a href="/" class="nav-brand"><div class="brand-icon">🔍</div><span>Campus L&F</span></a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/dashboard.html" class="active">Browse Items</a></li>
+      <li><a href="/post.html">Post Item</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="notif-btn hidden" id="notif-btn">🔔<span class="notif-badge hidden" id="notif-badge">0</span></button>
+      <div id="nav-auth-btns" style="display:flex;gap:8px">
+        <a href="/login.html" class="btn btn-ghost btn-sm">Login</a>
+        <a href="/login.html?tab=register" class="btn btn-primary btn-sm">Sign Up</a>
+      </div>
+      <div id="nav-auth-user" class="hidden" style="display:flex;align-items:center;gap:8px">
+        <a href="/profile.html" class="nav-avatar" id="nav-avatar">U</a>
+        <button class="btn btn-ghost btn-sm" onclick="logout()">Logout</button>
+      </div>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <div class="page-content">
+    <div class="page-header">
+      <h1>Browse <span style="background:var(--grad-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Lost & Found</span> Items</h1>
+      <p>Search through all items posted by your campus community</p>
+    </div>
+
+    <div class="container" style="padding-bottom:4rem">
+      <!-- Type Tabs -->
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:1.25rem">
+        <div class="type-tabs">
+          <button class="type-tab active-all" data-type="all">All Items</button>
+          <button class="type-tab" data-type="lost">🔴 Lost</button>
+          <button class="type-tab" data-type="found">🟢 Found</button>
+        </div>
+        <div style="display:flex;align-items:center;gap:1rem">
+          <span id="total-count" style="font-size:0.85rem;color:var(--text-muted)"></span>
+          <a href="/post.html" class="btn btn-primary btn-sm">+ Post Item</a>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="filters-bar">
+        <div class="search-box">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="search-input" placeholder="Search by title, description, location...">
+        </div>
+        <div class="filter-group">
+          <label>Category</label>
+          <select id="filter-category" class="filter-select">
+            <option value="all">All Categories</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Status</label>
+          <select id="filter-status" class="filter-select">
+            <option value="active">Active Only</option>
+            <option value="resolved">Resolved</option>
+            <option value="all">All Status</option>
+          </select>
+        </div>
+        <button id="clear-filters" class="btn btn-ghost btn-sm">✕ Clear</button>
+      </div>
+
+      <!-- Grid -->
+      <div class="items-grid" id="items-grid"></div>
+
+      <!-- Pagination -->
+      <div class="pagination" id="pagination"></div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+  <script src="/js/api.js"></script>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

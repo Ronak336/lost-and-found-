@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Lost & Found — Find What You've Lost</title>
+  <meta name="description" content="The official college lost and found portal. Post lost or found items, search listings, and help your fellow students.">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>">
+  <script>
+    if (!localStorage.getItem('lf_token')) {
+      window.location.replace('/login.html');
+    } else {
+      window.location.replace('/dashboard.html');
+    }
+  </script>
+</head>
+<body>
+  <div class="progress-bar" id="progress-bar" style="width:0%"></div>
+  <!-- NAVBAR -->
+  <nav class="navbar" id="navbar">
+    <a href="/" class="nav-brand">
+      <div class="brand-icon">🔍</div>
+      <span>Campus L&F</span>
+    </a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="/" class="active">Home</a></li>
+      <li><a href="/dashboard.html">Browse Items</a></li>
+      <li><a href="/post.html">Post Item</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="notif-btn hidden" id="notif-btn">
+        🔔 <span class="notif-badge hidden" id="notif-badge">0</span>
+      </button>
+      <div id="nav-auth-btns" style="display:flex;gap:8px">
+        <a href="/login.html" class="btn btn-ghost btn-sm">Login</a>
+        <a href="/login.html?tab=register" class="btn btn-primary btn-sm">Sign Up</a>
+      </div>
+      <div id="nav-auth-user" class="hidden" style="display:flex;align-items:center;gap:8px">
+        <a href="/profile.html" class="nav-avatar" id="nav-avatar" title="My Profile">U</a>
+        <button class="btn btn-ghost btn-sm" onclick="logout()">Logout</button>
+      </div>
+      <button class="hamburger" id="hamburger">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="page-content">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-bg-shapes">
+        <div class="hero-shape hero-shape-1"></div>
+        <div class="hero-shape hero-shape-2"></div>
+        <div class="hero-shape hero-shape-3"></div>
+      </div>
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span class="dot"></span>
+          Official College Lost & Found Portal
+        </div>
+        <h1 class="hero-title">
+          Lost Something?<br>
+          <span class="highlight">We'll Help You Find It</span>
+        </h1>
+        <p class="hero-subtitle">
+          The fastest way to reunite students with their belongings. Post, search, and connect with your campus community.
+        </p>
+        <div class="hero-actions">
+          <a href="/post.html" class="btn btn-lost btn-lg">🔴 I Lost Something</a>
+          <a href="/post.html" class="btn btn-found btn-lg" id="hero-found-btn">🟢 I Found Something</a>
+          <a href="/dashboard.html" class="btn btn-ghost btn-lg">🔍 Browse All Items</a>
+        </div>
+        <div class="hero-stats" id="hero-stats">
+          <div class="stat-item">
+            <div class="stat-number" id="stat-total">0</div>
+            <div class="stat-label">Total Items</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number text-lost" id="stat-lost">0</div>
+            <div class="stat-label">Lost Items</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number text-found" id="stat-found">0</div>
+            <div class="stat-label">Found Items</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" style="color:var(--accent-gold)" id="stat-resolved">0</div>
+            <div class="stat-label">Reunited ✨</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW IT WORKS -->
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">How It <span style="background:var(--grad-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Works</span></h2>
+          <p class="section-subtitle">Getting reunited with your items is easy and quick</p>
+        </div>
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-num">1</div>
+            <div class="step-icon">🔐</div>
+            <h3>Create Account</h3>
+            <p>Sign up with your college email to access all features and post items.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">2</div>
+            <div class="step-icon">📋</div>
+            <h3>Post Your Item</h3>
+            <p>Report a lost or found item with photos, description and location details.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">3</div>
+            <div class="step-icon">🔔</div>
+            <h3>Get Notified</h3>
+            <p>Receive automatic notifications when matching items are posted by others.</p>
+          </div>
+          <div class="step-card">
+            <div class="step-num">4</div>
+            <div class="step-icon">🤝</div>
+            <h3>Connect & Reunite</h3>
+            <p>Contact the finder/owner directly and mark the item as resolved!</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- RECENT ITEMS -->
+    <section class="section" style="padding-top:0">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Recent <span style="background:var(--grad-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Listings</span></h2>
+          <p class="section-subtitle">Latest lost and found items posted by students</p>
+        </div>
+        <div class="items-grid" id="recent-grid">
+          <!-- Skeletons -->
+          <div class="skeleton-card"><div class="skeleton" style="height:200px;border-radius:0"></div><div style="padding:1.25rem;display:flex;flex-direction:column;gap:10px"><div class="skeleton" style="height:18px;width:60%"></div><div class="skeleton" style="height:22px;width:85%"></div><div class="skeleton" style="height:14px"></div></div></div>
+          <div class="skeleton-card"><div class="skeleton" style="height:200px;border-radius:0"></div><div style="padding:1.25rem;display:flex;flex-direction:column;gap:10px"><div class="skeleton" style="height:18px;width:60%"></div><div class="skeleton" style="height:22px;width:85%"></div><div class="skeleton" style="height:14px"></div></div></div>
+          <div class="skeleton-card"><div class="skeleton" style="height:200px;border-radius:0"></div><div style="padding:1.25rem;display:flex;flex-direction:column;gap:10px"><div class="skeleton" style="height:18px;width:60%"></div><div class="skeleton" style="height:22px;width:85%"></div><div class="skeleton" style="height:14px"></div></div></div>
+        </div>
+        <div style="text-align:center;margin-top:2.5rem">
+          <a href="/dashboard.html" class="btn btn-primary btn-lg">View All Items →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="section" style="padding-top:0">
+      <div class="container">
+        <div style="background:linear-gradient(135deg,rgba(83,82,237,0.15),rgba(168,85,247,0.1));border:1px solid rgba(83,82,237,0.3);border-radius:var(--radius-xl);padding:3.5rem 2rem;text-align:center">
+          <h2 style="font-family:var(--font-display);font-size:2rem;font-weight:800;margin-bottom:0.75rem">Ready to Help Your Campus? 🎓</h2>
+          <p style="color:var(--text-secondary);margin-bottom:2rem;max-width:480px;margin-left:auto;margin-right:auto">Join thousands of students helping each other find their lost belongings. Every small action makes a big difference.</p>
+          <div style="display:flex;gap:1rem;justify-content:center;flex-wrap:wrap">
+            <a href="/login.html?tab=register" class="btn btn-primary btn-lg">🚀 Get Started Free</a>
+            <a href="/dashboard.html" class="btn btn-ghost btn-lg">Browse Items</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-brand">
+            <div class="nav-brand" style="margin-bottom:0.5rem">
+              <div class="brand-icon">🔍</div>
+              <span>Campus Lost & Found</span>
+            </div>
+            <p>The official portal to help college students reunite with their lost belongings. Built with ❤️ for the campus community.</p>
+          </div>
+          <div class="footer-col">
+            <h5>Quick Links</h5>
+            <a href="/">Home</a>
+            <a href="/dashboard.html">Browse Items</a>
+            <a href="/post.html">Post Item</a>
+          </div>
+          <div class="footer-col">
+            <h5>Account</h5>
+            <a href="/login.html">Login</a>
+            <a href="/login.html?tab=register">Register</a>
+            <a href="/profile.html">My Profile</a>
+          </div>
+          <div class="footer-col">
+            <h5>Categories</h5>
+            <a href="/dashboard.html?cat=Electronics">Electronics</a>
+            <a href="/dashboard.html?cat=ID Cards">ID Cards</a>
+            <a href="/dashboard.html?cat=Keys">Keys & Wallets</a>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <span>© 2024 Campus Lost & Found Portal. Made with <span>❤️</span> for students.</span>
+          <span>All rights reserved.</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <div id="toast-container"></div>
+  <script src="/js/api.js"></script>
+  <script>
+    // Found btn — set type
+    document.getElementById('hero-found-btn').href = '/post.html?type=found';
+
+    // Load stats
+    async function loadStats() {
+      try {
+        const s = await api('/items/stats');
+        document.getElementById('stat-total').textContent = s.total;
+        document.getElementById('stat-lost').textContent = s.lost;
+        document.getElementById('stat-found').textContent = s.found;
+        document.getElementById('stat-resolved').textContent = s.resolved;
+      } catch(e){}
+    }
+
+    // Load recent items
+    async function loadRecent() {
+      try {
+        const data = await api('/items?limit=3&status=active');
+        const grid = document.getElementById('recent-grid');
+        if (data.items.length) grid.innerHTML = data.items.map(buildItemCard).join('');
+        else grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">📭</div><h3>No items yet</h3><p>Be the first to post!</p></div>';
+      } catch(e){}
+    }
+
+    // Progress bar on scroll
+    window.addEventListener('scroll', () => {
+      const el = document.getElementById('progress-bar');
+      const pct = (window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100;
+      el.style.width = pct + '%';
+    });
+
+    loadStats();
+    loadRecent();
+  </script>
+</body>
+</html>

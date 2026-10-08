@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Post Item — Campus Lost & Found</title>
+  <meta name="description" content="Report a lost or found item on the campus portal.">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>">
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <a href="/" class="nav-brand"><div class="brand-icon">🔍</div><span>Campus L&F</span></a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/dashboard.html">Browse Items</a></li>
+      <li><a href="/post.html" class="active">Post Item</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="notif-btn hidden" id="notif-btn">🔔<span class="notif-badge hidden" id="notif-badge">0</span></button>
+      <div id="nav-auth-btns" style="display:flex;gap:8px">
+        <a href="/login.html" class="btn btn-ghost btn-sm">Login</a>
+        <a href="/login.html?tab=register" class="btn btn-primary btn-sm">Sign Up</a>
+      </div>
+      <div id="nav-auth-user" class="hidden" style="display:flex;align-items:center;gap:8px">
+        <a href="/profile.html" class="nav-avatar" id="nav-avatar">U</a>
+        <button class="btn btn-ghost btn-sm" onclick="logout()">Logout</button>
+      </div>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <div class="page-content">
+    <div class="page-header">
+      <h1>Post an <span style="background:var(--grad-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Item</span></h1>
+      <p>Report a lost or found item to the campus community</p>
+    </div>
+
+    <div class="container" style="max-width:760px;padding-bottom:4rem">
+      <!-- Type Selector -->
+      <div style="background:var(--bg-card);border:1px solid var(--glass-border);border-radius:var(--radius-lg);padding:1.5rem;margin-bottom:1.5rem">
+        <p style="font-size:0.85rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:0.75rem">What are you reporting?</p>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <button class="btn btn-lost active-lost type-toggle-btn" data-type="lost" style="flex:1;min-width:140px;font-size:1rem;padding:.85rem">
+            🔴 I Lost Something
+          </button>
+          <button class="btn btn-ghost type-toggle-btn" data-type="found" style="flex:1;min-width:140px;font-size:1rem;padding:.85rem">
+            🟢 I Found Something
+          </button>
+        </div>
+        <p id="type-indicator" style="margin-top:0.75rem;font-size:0.85rem;font-weight:600;color:var(--accent-lost)">🔴 Reporting a Lost Item</p>
+      </div>
+
+      <!-- Post Form -->
+      <div class="auth-card">
+        <form id="post-form" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="item-title">Item Title <span class="required">*</span></label>
+            <input type="text" id="item-title" class="form-control" placeholder="e.g. Blue Samsung Galaxy S23, Brown Leather Wallet..." required maxlength="120">
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="item-category">Category <span class="required">*</span></label>
+              <select id="item-category" class="form-control" required>
+                <option value="">Select a category</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="item-date">Date Lost/Found <span class="required">*</span></label>
+              <input type="date" id="item-date" class="form-control" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="item-location">Location <span class="required">*</span></label>
+            <input type="text" id="item-location" class="form-control" placeholder="e.g. Library 2nd Floor, Canteen, Block A Room 203..." required>
+          </div>
+
+          <div class="form-group">
+            <label for="item-desc">Description</label>
+            <textarea id="item-desc" class="form-control" rows="4" placeholder="Provide details: color, brand, markings, when/where exactly, any identifying features..."></textarea>
+          </div>
+
+          <!-- Image Upload -->
+          <div class="form-group">
+            <label>Photo (optional)</label>
+            <div class="upload-area" id="upload-area">
+              <input type="file" id="item-image" name="image" accept="image/*">
+              <div class="upload-content">
+                <div class="upload-icon">📸</div>
+                <div class="upload-text">Click to upload or drag & drop</div>
+                <div class="upload-hint">PNG, JPG, JPEG — Max 5MB</div>
+              </div>
+              <div class="upload-preview" id="image-preview">
+                <img id="preview-img" src="" alt="Preview">
+                <p style="font-size:0.78rem;color:var(--text-muted);margin-top:0.5rem">Click to change image</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="divider"></div>
+          <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:1rem">📞 Contact Information (shown to logged-in users)</p>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="item-contact-email">Contact Email</label>
+              <input type="email" id="item-contact-email" class="form-control" placeholder="your@email.com">
+            </div>
+            <div class="form-group">
+              <label for="item-contact-phone">Contact Phone</label>
+              <input type="tel" id="item-contact-phone" class="form-control" placeholder="+91 98765 43210">
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn-primary btn-full btn-lg">🚀 Post Item</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+  <script src="/js/api.js"></script>
+  <script src="/js/post.js"></script>
+</body>
+</html>

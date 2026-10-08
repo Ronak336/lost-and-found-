@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile — Campus Lost & Found</title>
+  <meta name="description" content="Manage your campus Lost & Found account and view your posted items.">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>">
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <a href="/" class="nav-brand"><div class="brand-icon">🔍</div><span>Campus L&F</span></a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/dashboard.html">Browse Items</a></li>
+      <li><a href="/post.html">Post Item</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="notif-btn hidden" id="notif-btn">🔔<span class="notif-badge hidden" id="notif-badge">0</span></button>
+      <div id="nav-auth-btns" style="display:flex;gap:8px">
+        <a href="/login.html" class="btn btn-ghost btn-sm">Login</a>
+      </div>
+      <div id="nav-auth-user" class="hidden" style="display:flex;align-items:center;gap:8px">
+        <span class="nav-avatar" id="nav-avatar">U</span>
+        <button class="btn btn-ghost btn-sm" onclick="logout()">Logout</button>
+      </div>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <div class="page-content">
+    <div class="container" style="padding-top:6rem;padding-bottom:4rem;max-width:900px">
+
+      <!-- Profile Header -->
+      <div class="profile-header">
+        <div class="profile-avatar-big" id="profile-avatar">U</div>
+        <div class="profile-info">
+          <h2 id="profile-name">Loading...</h2>
+          <p id="profile-email" style="color:var(--text-muted);font-size:0.85rem"></p>
+          <div class="profile-badges" id="profile-badges"></div>
+        </div>
+        <div style="margin-left:auto">
+          <a href="/post.html" class="btn btn-primary">+ Post Item</a>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="s-num" id="stat-total" style="background:var(--grad-primary);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">0</div>
+          <div class="s-label">Total Posts</div>
+        </div>
+        <div class="stat-card">
+          <div class="s-num text-lost" id="stat-lost">0</div>
+          <div class="s-label">Lost Items</div>
+        </div>
+        <div class="stat-card">
+          <div class="s-num text-found" id="stat-found">0</div>
+          <div class="s-label">Found Items</div>
+        </div>
+        <div class="stat-card">
+          <div class="s-num" style="color:var(--accent-gold)" id="stat-resolved">0</div>
+          <div class="s-label">Resolved ✅</div>
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="type-tabs" style="margin-bottom:1.5rem">
+        <button class="profile-tab type-tab active-all" data-panel="panel-items">My Items</button>
+        <button class="profile-tab type-tab" data-panel="panel-edit">Edit Profile</button>
+        <button class="profile-tab type-tab" data-panel="panel-security">Security</button>
+      </div>
+
+      <!-- Panel: My Items -->
+      <div id="panel-items" class="tab-panel">
+        <div style="display:flex;flex-direction:column;gap:1rem" id="my-items-grid">
+          <div class="skeleton" style="height:88px;border-radius:var(--radius-lg)"></div>
+          <div class="skeleton" style="height:88px;border-radius:var(--radius-lg)"></div>
+          <div class="skeleton" style="height:88px;border-radius:var(--radius-lg)"></div>
+        </div>
+      </div>
+
+      <!-- Panel: Edit Profile -->
+      <div id="panel-edit" class="tab-panel hidden">
+        <div class="auth-card">
+          <h3 style="font-family:var(--font-display);font-weight:700;margin-bottom:1.25rem">✏️ Edit Profile</h3>
+          <form id="edit-profile-form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="edit-name">Full Name</label>
+                <input type="text" id="edit-name" class="form-control" placeholder="Your full name">
+              </div>
+              <div class="form-group">
+                <label for="edit-colid">College ID</label>
+                <input type="text" id="edit-colid" class="form-control" placeholder="e.g. 22CS001">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="edit-phone">Phone Number (10 Digits Only)</label>
+              <input type="tel" id="edit-phone" class="form-control" placeholder="Enter 10-digit mobile number" maxlength="10" pattern="[0-9]{10}" inputmode="numeric">
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="edit-dept">Course / Department</label>
+                <select id="edit-dept" class="form-control">
+                  <option value="">Select Course / Department</option>
+                  <optgroup label="💻 Computer Applications & IT">
+                    <option value="BCA">BCA (Bachelor of Computer Applications)</option>
+                    <option value="MCA">MCA (Master of Computer Applications)</option>
+                    <option value="B.Sc Computer Science">B.Sc Computer Science</option>
+                    <option value="B.Sc IT">B.Sc Information Technology (IT)</option>
+                    <option value="M.Sc IT / CS">M.Sc Computer Science / IT</option>
+                  </optgroup>
+                  <optgroup label="📈 Management & Commerce">
+                    <option value="BBA">BBA (Bachelor of Business Administration)</option>
+                    <option value="MBA">MBA (Master of Business Administration)</option>
+                    <option value="B.Com">B.Com (Bachelor of Commerce)</option>
+                    <option value="B.Com (Hons)">B.Com (Honours)</option>
+                    <option value="M.Com">M.Com (Master of Commerce)</option>
+                  </optgroup>
+                  <optgroup label="⚙️ Engineering & Technology">
+                    <option value="B.Tech CSE">B.Tech - Computer Science (CSE)</option>
+                    <option value="B.Tech AI & Data Science">B.Tech - AI & Data Science</option>
+                    <option value="B.Tech IT">B.Tech - Information Technology (IT)</option>
+                    <option value="B.Tech ECE">B.Tech - Electronics & Comm. (ECE)</option>
+                    <option value="B.Tech Mechanical">B.Tech - Mechanical Engineering</option>
+                    <option value="B.Tech Civil">B.Tech - Civil Engineering</option>
+                    <option value="B.Tech Electrical">B.Tech - Electrical Engineering</option>
+                    <option value="M.Tech">M.Tech</option>
+                  </optgroup>
+                  <optgroup label="🔬 Science & Arts">
+                    <option value="B.Sc (General)">B.Sc (Sciences)</option>
+                    <option value="B.Sc Biotechnology">B.Sc Biotechnology</option>
+                    <option value="B.A">B.A (Arts)</option>
+                    <option value="M.A">M.A (Arts)</option>
+                  </optgroup>
+                  <optgroup label="⚖️ Law, Pharmacy, Design">
+                    <option value="Law (LLB)">LLB / Law</option>
+                    <option value="B.Pharm">B.Pharm (Pharmacy)</option>
+                    <option value="B.Des">B.Des (Design)</option>
+                    <option value="B.Arch">B.Arch (Architecture)</option>
+                    <option value="Diploma / Polytechnic">Diploma / Polytechnic</option>
+                    <option value="Other">Other</option>
+                  </optgroup>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="edit-year">Select Year</label>
+                <select id="edit-year" class="form-control">
+                  <option value="">Select Year (1, 2, 3, 4)</option>
+                  <option value="1">1st Year (1)</option>
+                  <option value="2">2nd Year (2)</option>
+                  <option value="3">3rd Year (3)</option>
+                  <option value="4">4th Year (4)</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg">💾 Save Changes</button>
+          </form>
+        </div>
+      </div>
+
+      <!-- Panel: Security -->
+      <div id="panel-security" class="tab-panel hidden">
+        <div class="auth-card">
+          <h3 style="font-family:var(--font-display);font-weight:700;margin-bottom:1.25rem">🔐 Change Password</h3>
+          <form id="change-pass-form">
+            <div class="form-group">
+              <label for="cur-pass">Current Password</label>
+              <input type="password" id="cur-pass" class="form-control" placeholder="Your current password" required>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="new-pass">New Password</label>
+                <input type="password" id="new-pass" class="form-control" placeholder="Min. 6 characters" required>
+              </div>
+              <div class="form-group">
+                <label for="confirm-new-pass">Confirm New Password</label>
+                <input type="password" id="confirm-new-pass" class="form-control" placeholder="Repeat new password" required>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg">🔐 Change Password</button>
+          </form>
+          <div class="divider"></div>
+          <div style="padding:1rem;background:rgba(255,71,87,0.05);border:1px solid rgba(255,71,87,0.2);border-radius:var(--radius-md)">
+            <h4 style="color:var(--accent-lost);font-weight:700;margin-bottom:0.4rem">⚠️ Danger Zone</h4>
+            <p style="font-size:0.85rem;color:var(--text-muted);margin-bottom:0.75rem">Logging out will clear your session from this device.</p>
+            <button class="btn btn-danger btn-sm" onclick="logout()">🚪 Logout</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+  <script src="/js/api.js"></script>
+  <script src="/js/profile.js"></script>
+</body>
+</html>

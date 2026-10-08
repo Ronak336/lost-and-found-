@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Item Detail — Campus Lost & Found</title>
+  <meta name="description" content="View details of a lost or found item on the campus portal.">
+  <link rel="stylesheet" href="/css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>">
+</head>
+<body>
+  <nav class="navbar" id="navbar">
+    <a href="/" class="nav-brand"><div class="brand-icon">🔍</div><span>Campus L&F</span></a>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="/">Home</a></li>
+      <li><a href="/dashboard.html">Browse Items</a></li>
+      <li><a href="/post.html">Post Item</a></li>
+    </ul>
+    <div class="nav-actions">
+      <button class="notif-btn hidden" id="notif-btn">🔔<span class="notif-badge hidden" id="notif-badge">0</span></button>
+      <div id="nav-auth-btns" style="display:flex;gap:8px">
+        <a href="/login.html" class="btn btn-ghost btn-sm">Login</a>
+        <a href="/login.html?tab=register" class="btn btn-primary btn-sm">Sign Up</a>
+      </div>
+      <div id="nav-auth-user" class="hidden" style="display:flex;align-items:center;gap:8px">
+        <a href="/profile.html" class="nav-avatar" id="nav-avatar">U</a>
+        <button class="btn btn-ghost btn-sm" onclick="logout()">Logout</button>
+      </div>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+  </nav>
+
+  <div class="page-content">
+    <div class="container" style="padding-top:6rem;padding-bottom:4rem">
+      <div style="margin-bottom:1.5rem">
+        <a href="/dashboard.html" class="btn btn-ghost btn-sm">← Back to Listings</a>
+      </div>
+      <div id="item-content">
+        <!-- Loading state -->
+        <div class="detail-grid">
+          <div>
+            <div class="skeleton" style="width:100%;aspect-ratio:4/3;border-radius:var(--radius-lg)"></div>
+            <div style="display:flex;flex-direction:column;gap:12px;margin-top:1rem">
+              <div class="skeleton" style="height:20px;width:40%"></div>
+              <div class="skeleton" style="height:32px;width:80%"></div>
+              <div class="skeleton" style="height:16px"></div>
+              <div class="skeleton" style="height:16px;width:70%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="skeleton" style="height:320px;border-radius:var(--radius-lg)"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+  <script src="/js/api.js"></script>
+  <script src="/js/item.js"></script>
+</body>
+</html>
